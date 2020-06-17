@@ -7,7 +7,7 @@ defmodule Rumbl.Multimedia do
   alias Rumbl.Repo
   alias Rumbl.Accounts
 
-  alias Rumbl.Multimedia.Video
+  alias Rumbl.Multimedia.{Category, Video}
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking video changes.
@@ -22,6 +22,10 @@ defmodule Rumbl.Multimedia do
     video
     |> Video.changeset(%{})
     |> put_user(user)
+  end
+
+  def create_category(name) do
+    Repo.get_by(Category, name: name) || Repo.insert!(%Category{name: name})
   end
 
   @doc """
@@ -81,6 +85,12 @@ defmodule Rumbl.Multimedia do
 
   """
   def get_video!(id), do: preload_user(Repo.get!(Video, id))
+
+  def list_alphabetical_categories do
+    Category
+    |> Category.alphabetical()
+    |> Repo.all()
+  end
 
   def list_user_videos(%Accounts.User{} = user) do
     Video
