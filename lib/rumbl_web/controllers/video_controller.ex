@@ -34,6 +34,7 @@ defmodule RumblWeb.VideoController do
   end
 
   def show(conn, %{"id" => id}, current_user) do
+    IO.inspect(id, label: "id>>>")
     video = Multimedia.get_user_video!(current_user, id)
     render(conn, "show.html", video: video)
   end
